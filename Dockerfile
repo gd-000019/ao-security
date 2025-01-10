@@ -22,9 +22,9 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean
 
 # Install Go (download and set up environment variables)
-RUN curl -LO https://go.dev/dl/go1.21.1.linux-amd64.tar.gz && \
-    tar -C /usr/local -xzf go1.21.1.linux-amd64.tar.gz && \
-    rm go1.21.1.linux-amd64.tar.gz
+RUN curl -LO https://go.dev/dl/go1.23.1.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go1.23.1.linux-amd64.tar.gz && \
+    rm go1.23.1.linux-amd64.tar.gz
 
 # Set Go environment variables
 ENV GOPATH=/root/go
@@ -74,6 +74,18 @@ RUN go install github.com/projectdiscovery/katana/cmd/katana@latest && \
 # Install nuclei
 RUN go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest && \
     ln -s /root/go/bin/nuclei /usr/local/bin/nuclei
+
+# Install dalfox
+RUN go install github.com/hahwul/dalfox/v2@latest && \
+    ln -s /root/go/bin/dalfox /usr/local/bin/dalfox
+
+# Install gowitness
+RUN go install github.com/sensepost/gowitness@latest && \
+ln -s /root/go/bin/gowitness /usr/local/bin/gowitness
+
+# Install httpx
+RUN go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest && \
+    ln -s /root/go/bin/httpx /usr/local/bin/httpx
 
 # Install cloudsploit
 RUN git clone https://github.com/aquasecurity/cloudsploit.git /opt/cloudsploit && \
