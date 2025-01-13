@@ -1,8 +1,8 @@
 <img src="logo.jpeg" alt="AO Security Posture Logo" width="200" height="200">
 
-# AO Security Posture Project
+# AO Security Posture 
 
-This project is a Docker-based environment designed to help users learn and experiment with tools related to security posture assessment and penetration testing. **This project is for educational purposes only and must be used ethically with proper authorization.**
+This is a Docker-based environment designed to help users learn and experiment with tools related to security posture assessment and penetration testing. **This project is for educational purposes only and must be used ethically with proper authorization.**
 
 ---
 
