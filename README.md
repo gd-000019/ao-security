@@ -1,8 +1,8 @@
+# AO Security Posture Project
+
 <img src="logo.jpeg" alt="AO Security Posture Logo" width="200" height="200">
 
-# AO Security Posture 
-
-This is a Docker-based environment designed to help users learn and experiment with tools related to security posture assessment and penetration testing. **This project is for educational purposes only and must be used ethically with proper authorization.**
+This project provides a Docker-based environment for running multiple security tools for reconnaissance, subdomain enumeration, and vulnerability assessment. It is designed for ethical use and learning purposes only.
 
 ---
 
@@ -11,157 +11,111 @@ This is a Docker-based environment designed to help users learn and experiment w
 ### **1. Build the Docker Image**
 To build the Docker image from the Dockerfile:
 ```bash
-docker build -t security-posture-docker-image .
+docker build -t ao-security-posture --platform=linux/amd64 .
 ```
+Adding the `--platform=linux/amd64` flag ensures compatibility on systems like macOS running on ARM architecture (e.g., Apple M1/M2 chips).
 
-### **2. Rebuild the Image Without Cache and place a Platform **
+### **2. Rebuild the Image Without Cache**
 To rebuild the image and ignore cached layers:
 ```bash
-docker build --no-cache -t security-posture-docker-image .
-docker build --no-cache --platform=linux/amd64 -t security-posture-docker-image .
+docker build --no-cache -t ao-security-posture --platform=linux/amd64 .
 ```
 
-### **3. Run a Container from the Image**
+### **3. Run the Container**
 To start a container interactively:
 ```bash
-docker run -it --name ao security-posture-docker-image
-docker run -it --platform=linux/amd64 --name ao security-posture-docker-image
+docker run -it --name ao-security-container ao-security-posture
 ```
 
-### **4. Start Docker in Detached Mode**
-To start a container in detached mode:
+To start the container in detached mode:
 ```bash
-docker run -dit --platform=linux/amd64 --name ao security-posture-docker-image
+docker run -dit --name ao-security-container ao-security-posture
 ```
 
-### **5. Enter the Running Container**
+### **4. Enter the Container**
 To access the running container:
 ```bash
-docker exec -it ao /bin/bash
+docker exec -it ao-security-container /bin/bash
 ```
 
-### **6. Run a Specific Command Inside the Image**
-To run a specific command (e.g., `httprobe`):
+### **5. Run Tools or Scripts**
+To run a specific tool directly, for example, `httprobe`:
 ```bash
-docker run --rm security-posture-docker-image httprobe -h
+docker run --rm ao-security-posture httprobe -h
 ```
 
-### **7. Execute Commands Outside the Container**
-To execute a command on a running container (e.g., `cdncheck`):
+To execute commands from outside the container:
 ```bash
-docker exec -it ao cdncheck -i test.com -j -o /home/reports/test.com-cdncheck.json
+docker exec -it ao-security-container cdncheck -i api.safeops.io -j -o /home/reports/api.safeops.io-cdncheck.json
 ```
 
-### **8. Remove a Container**
-To stop and remove the container:
+### **6. Use the AO CLI**
+The `aocli.py` script is included for streamlined scanning. It runs domain-related tools and aggregates their outputs into a single JSON file.
+
+#### **Usage**
 ```bash
-docker stop ao
+aocli -d example.com -o /home/reports/output.json
 ```
-```bash
-docker rm ao
-```
+Options:
+- `-d`: Specify the domain to scan.
+- `-o`: Specify the output file for aggregated results (default: `/home/reports/aggregated_output.json`).
+- `--exclude`: Exclude specific tools from the scan (e.g., `--exclude nuclei subfinder`).
 
 ---
 
-## **Included Tools**
+## **Tools Included**
 
 ### **Reconnaissance Tools**
-
-1. **Naabu**
-   - **Category**: Port Scanning
-   - **Description**: Fast and reliable port scanner supporting SYN/CONNECT/UDP scans.
-   - **Link**: [Naabu on GitHub](https://github.com/projectdiscovery/naabu)
-
-2. **Httprobe**
-   - **Category**: HTTP/HTTPS Probing
-   - **Description**: Probes domains for working HTTP and HTTPS servers.
-   - **Link**: [Httprobe on GitHub](https://github.com/tomnomnom/httprobe)
-
-3. **CDNCheck**
-   - **Category**: Information Gathering
-   - **Description**: Identifies technologies associated with DNS/IP network addresses.
-   - **Link**: [CDNCheck on GitHub](https://github.com/projectdiscovery/cdncheck)
-
-4. **WafW00f**
-   - **Category**: WAF Detection
-   - **Description**: Identifies and fingerprints Web Application Firewall (WAF) products.
-   - **Link**: [WafW00f on GitHub](https://github.com/EnableSecurity/wafw00f)
-
-5. **Katana**
-   - **Category**: Web Crawling
-   - **Description**: Fast crawler for headless and non-headless crawling.
-   - **Link**: [Katana on GitHub](https://github.com/projectdiscovery/katana)
-
-6. **Dirsearch**
-   - **Category**: Web Path Brute-Forcing
-   - **Description**: An advanced web path brute-forcer.
-   - **Link**: [Dirsearch on GitHub](https://github.com/maurosoria/dirsearch)
-
----
+1. **Naabu**: Port scanning tool ([GitHub](https://github.com/projectdiscovery/naabu)).
+2. **Httprobe**: HTTP/HTTPS probing ([GitHub](https://github.com/tomnomnom/httprobe)).
+3. **CDNCheck**: DNS/IP network technology detection ([GitHub](https://github.com/projectdiscovery/cdncheck)).
+4. **WafW00f**: Web Application Firewall detection ([GitHub](https://github.com/EnableSecurity/wafw00f)).
+5. **Katana**: Web crawler ([GitHub](https://github.com/projectdiscovery/katana)).
+6. **Dirsearch**: Web path brute-forcer ([GitHub](https://github.com/maurosoria/dirsearch)).
 
 ### **Subdomain Enumeration Tools**
-
-1. **Amass**
-   - **Category**: Subdomain Enumeration
-   - **Description**: Performs external asset discovery using open-source information gathering.
-   - **Link**: [Amass on GitHub](https://github.com/owasp-amass/amass)
-
-2. **Subfinder**
-   - **Category**: Subdomain Discovery
-   - **Description**: Returns valid subdomains for websites using passive online sources.
-   - **Link**: [Subfinder on GitHub](https://github.com/projectdiscovery/subfinder)
-
-3. **Assetfinder**
-   - **Category**: Subdomain Discovery
-   - **Description**: Finds domains and subdomains related to a given domain.
-   - **Link**: [Assetfinder on GitHub](https://github.com/tomnomnom/assetfinder)
-
-4. **Sub.sh**
-   - **Category**: Subdomain Enumeration
-   - **Description**: A script to detect subdomains using various methods and tools.
-   - **Link**: [Sub.sh on GitHub](https://github.com/cihanmehmet/sub.sh)
-
----
+1. **Amass**: Subdomain discovery ([GitHub](https://github.com/owasp-amass/amass)).
+2. **Subfinder**: Passive subdomain discovery ([GitHub](https://github.com/projectdiscovery/subfinder)).
+3. **Assetfinder**: Subdomain finder ([GitHub](https://github.com/tomnomnom/assetfinder)).
+4. **Sub.sh**: Subdomain detection script ([GitHub](https://github.com/cihanmehmet/sub.sh)).
 
 ### **Vulnerability Assessment Tools**
-
-1. **Nuclei**
-   - **Category**: Application Vulnerability Assessment
-   - **Description**: Customizable vulnerability scanner using YAML templates.
-   - **Link**: [Nuclei on GitHub](https://github.com/projectdiscovery/nuclei)
-
-2. **CloudSploit**
-   - **Category**: Cloud Security Posture Management
-   - **Description**: Detects misconfigurations in cloud infrastructure accounts.
-   - **Link**: [CloudSploit on GitHub](https://github.com/aquasecurity/cloudsploit)
-
-3. **Trivy**
-   - **Category**: Infrastructure Vulnerability Assessment
-   - **Description**: Security scanner for containers, file systems, Git repositories, and more.
-   - **Link**: [Trivy on GitHub](https://github.com/aquasecurity/trivy)
-
-4. **TruffleHog3**
-   - **Category**: Repository Vulnerability Assessment
-   - **Description**: Scans Git repositories for secrets and sensitive data.
-   - **Link**: [TruffleHog3 on GitHub](https://github.com/feeltheajf/trufflehog3)
-
-5. **Dependency-Check**
-   - **Category**: Dependency Vulnerability Assessment
-   - **Description**: Detects vulnerabilities in project dependencies.
-   - **Link**: [Dependency-Check on GitHub](https://github.com/jeremylong/DependencyCheck)
+1. **Nuclei**: Vulnerability scanner ([GitHub](https://github.com/projectdiscovery/nuclei)).
+2. **CloudSploit**: Cloud configuration security scanner ([GitHub](https://github.com/aquasecurity/cloudsploit)).
+3. **Trivy**: Security scanner for infrastructure ([GitHub](https://github.com/aquasecurity/trivy)).
+4. **TruffleHog3**: Repository vulnerability scanner ([GitHub](https://github.com/feeltheajf/trufflehog3)).
+5. **Dependency-Check**: Dependency vulnerability scanner ([GitHub](https://github.com/jeremylong/DependencyCheck)).
 
 ---
 
-## **Learning Intention**
+## **Advanced Examples**
 
-This project is intended to promote a better understanding of security posture tools and techniques. **Please use this environment responsibly and only with proper authorization.**
+### **Running with Custom Scans**
+To exclude specific tools while scanning:
+```bash
+aocli -d example.com -o /home/reports/output.json --exclude subfinder nuclei
+```
+
+### **Running Individual Tools**
+Run `nuclei` directly:
+```bash
+docker exec -it ao-security-container nuclei -u example.com -json -o /home/reports/example-nuclei.json
+```
+
+Run `subfinder` directly:
+```bash
+docker exec -it ao-security-container subfinder -d example.com -o /home/reports/example-subfinder.json
+```
+
+---
+
+## **Learning Intent**
+This project is built for learning and demonstrating capabilities in security posture assessment. Use it responsibly and ethically.
 
 ---
 
 ## **Acknowledgments**
-
-This project includes open-source tools from various developers and communities who have contributed significantly to improving cybersecurity. Special thanks to their efforts and commitment to the field.
+Special thanks to all open-source contributors whose tools make this project possible.
 
 ---
 
-Let me know if you need any further modifications or additions to the README!
