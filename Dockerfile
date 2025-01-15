@@ -47,21 +47,13 @@ RUN curl -LO https://go.dev/dl/go1.21.1.linux-amd64.tar.gz && \
 ENV GOPATH=/root/go
 ENV PATH=$GOPATH/bin:/usr/local/go/bin:$PATH
 
-# Install naabu
-RUN go install -v github.com/projectdiscovery/naabu/v2/cmd/naabu@latest && \
-    ln -s /root/go/bin/naabu /usr/local/bin/naabu
-
-# Install httprobe
-RUN go install github.com/tomnomnom/httprobe@latest && \
-    ln -s /root/go/bin/httprobe /usr/local/bin/httprobe
-
-# Install cdncheck
-RUN go install -v github.com/projectdiscovery/cdncheck/cmd/cdncheck@latest && \
-    ln -s /root/go/bin/cdncheck /usr/local/bin/cdncheck
-
 # Install Amass
 RUN go install -v github.com/owasp-amass/amass/v4/cmd/amass@latest && \
     ln -s /root/go/bin/amass /usr/local/bin/amass
+
+# Install osmedeus
+RUN go install -v github.com/j3ssie/osmedeus@latest  && \
+    ln -s /root/go/bin/osmedeus /usr/local/bin/osmedeus
 
 # Install subfinder
 RUN go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest && \
@@ -84,6 +76,18 @@ RUN go install github.com/projectdiscovery/katana/cmd/katana@latest && \
 # Install nuclei
 RUN go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest && \
     ln -s /root/go/bin/nuclei /usr/local/bin/nuclei
+
+# Install dalfox
+RUN go install github.com/hahwul/dalfox/v2@latest && \
+    ln -s /root/go/bin/dalfox /usr/local/bin/dalfox
+
+# Install gowitness
+RUN go install github.com/sensepost/gowitness@latest && \
+ln -s /root/go/bin/gowitness /usr/local/bin/gowitness
+
+# Install httpx
+RUN go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest && \
+    ln -s /root/go/bin/httpx /usr/local/bin/httpx
 
 # Install cloudsploit
 RUN git clone https://github.com/aquasecurity/cloudsploit.git /opt/cloudsploit && \
