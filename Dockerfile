@@ -39,7 +39,7 @@ RUN python3 -m venv /opt/venv && \
 COPY aocli.py /usr/local/bin/aocli
 RUN chmod +x /usr/local/bin/aocli
 # Remove chars
-RUN sed -i 's/\r$//' /usr/local/bin/aocli.py
+RUN sed -i 's/\r$//' /usr/local/bin/aocli
 
 # Install additional Python tools
 RUN pip3 install wafw00f knock-subdomains trufflehog3 dirsearch
@@ -64,8 +64,8 @@ RUN go install -v github.com/owasp-amass/amass/v4/cmd/amass@latest && \
 # Install Sudomy
 RUN git clone --recursive https://github.com/screetsec/Sudomy.git /opt/Sudomy && \
     python3 -m pip install -r /opt/Sudomy/requirements.txt && \
-    cp sudomy.conf /usr/local/bin/sudomy.conf && \
-    cp sudomy.api.dist /usr/local/bin/sudomy.api && \
+    cp /opt/Sudomy/sudomy.conf /usr/local/bin/sudomy.conf && \
+    cp /opt/Sudomy/sudomy.api.dist /usr/local/bin/sudomy.api && \
     ln -s /opt/Sudomy/sudomy /usr/local/bin/sudomy
 
 # Install Node.js tools
