@@ -22,6 +22,7 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean
 
 # Add aocli script to the image
+COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 COPY aocli.py /usr/local/bin/aocli.py
 RUN chmod +x /usr/local/bin/aocli.py && ln -s /usr/local/bin/aocli.py /usr/local/bin/aocli
